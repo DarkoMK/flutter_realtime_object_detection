@@ -22,7 +22,6 @@ To get started with the Flutter Realtime Object Detection app, follow these step
 
 `git clone https://github.com/DarkoMK/flutter_realtime_object_detection.git`
 
-
 2. Navigate to the project directory:
 
 `cd flutter_realtime_object_detection`
@@ -47,16 +46,17 @@ The Flutter Realtime Object Detection app relies on the following dependencies:
 
 These dependencies are defined in the `pubspec.yaml` file and will be automatically resolved when running `flutter pub get`.
 
-## Resources
+## Resources used
 
 For more information about TensorFlow Lite and YOLOv5, refer to the following resources:
 
 - [TensorFlow Lite](https://www.tensorflow.org/lite)
 - [YOLOv5 GitHub Repository](https://github.com/ultralytics/yolov5)
+- [Real-time object detection using new TensorFlow Lite Flutter Support](https://medium.com/@am15hg/real-time-object-detection-using-new-tensorflow-lite-flutter-support-ea41263e801d)
 
 ## Contributing
 
-Contributions to this project are welcome! If you encounter any issues or have suggestions for improvements, please submit them via GitHub issues. Additionally, feel free to submit pull requests with your proposed changes.
+This is a Seminar Research Project, not intended for further developing.
 
 ## License
 
