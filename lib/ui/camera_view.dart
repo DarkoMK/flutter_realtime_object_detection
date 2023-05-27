@@ -7,6 +7,7 @@ import 'package:flutter_realtime_object_detection/tflite/recognition.dart';
 import 'package:flutter_realtime_object_detection/tflite/stats.dart';
 import 'package:flutter_realtime_object_detection/ui/camera_view_singleton.dart';
 import 'package:flutter_realtime_object_detection/utils/isolate_utils.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 /// [CameraView] sends each frame for inference
 class CameraView extends StatefulWidget {
@@ -42,10 +43,10 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    initStateAsync();
+    initStateAsync(context);
   }
 
-  void initStateAsync() async {
+  void initStateAsync(BuildContext context) async {
     WidgetsBinding.instance.addObserver(this);
 
     // Spawn a new isolate
@@ -53,6 +54,7 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
     await isolateUtils?.start();
 
     // Camera initialization
+    requestCameraPermission(context);
     initializeCamera();
 
     // Create an instance of classifier to load model and labels
@@ -62,12 +64,36 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
     predicting = false;
   }
 
+  Future<void> requestCameraPermission(BuildContext context) async {
+    final PermissionStatus status = await Permission.camera.request();
+    if (status != PermissionStatus.granted) {
+      // Permission is denied
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Camera Permission'),
+            content: Text('Please grant camera permission to use the app.'),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+  }
+
   /// Initializes the camera by setting [cameraController]
   void initializeCamera() async {
     cameras = await availableCameras();
 
     // cameras[0] for rear-camera
-    cameraController = CameraController(cameras![0], ResolutionPreset.low, enableAudio: false);
+    cameraController =
+        CameraController(cameras![0], ResolutionPreset.low, enableAudio: false);
 
     await cameraController?.initialize();
 
@@ -90,7 +116,6 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
       CameraViewSingleton.ratio = screenSize.width / previewSize.height;
     }
   }
-
 
   @override
   Widget build(BuildContext context) {

@@ -42,6 +42,7 @@ dependencies:
   tflite_flutter: ^0.9.5
   flutter_mediapipe: ^0.0.7
   tflite_flutter_helper: ^0.2.1
+  permission_handler: ^10.2.0
 
 dev_dependencies:
   flutter_test:
